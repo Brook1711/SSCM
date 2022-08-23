@@ -1,0 +1,142 @@
+LineWidthValue = 0.75;
+PlotLineWidthValue = 2;
+ItemTokenSizeValue = [8 18];
+ScatterMarkerSize = 50;
+myFontSize = 18;
+colors = ...
+ 1/256*[ 31,119,180; % 1 默认蓝色
+        255,127,14;  % 2 橘色
+         44,160,44;  % 3 绿色
+        214,39,40;   % 4 红色
+        148,103,189; % 5 紫色
+        140,86,75;   % 6 棕色 
+       227,119,194;  % 7 粉色
+       127,127,127;  % 8 灰色
+       188,189,34;   % 9 青棕
+       23,190,207;   % 10 淡蓝
+       26,85,255;    % 11 鲜蓝色
+       78, 173, 234; % blue
+       234, 51, 35;   % red
+       ];
+color_mea = colors(13,:);
+color_gau = colors(12,:);
+color_NYUsim = colors(6,:);
+color_3LHS = colors(4,:);
+
+
+% + 加号
+% o 圆圈
+% * 星号
+% . 实心点
+% x 叉号
+% s 正方形
+% d 钻石形
+% ^ 上三角形
+% v 下三角形
+% > 右三角形
+% < 左三角形
+% p 五角星形
+% h 六角星形
+marker_mea = "x";
+marker_sim = "*";
+
+close all;
+
+% load Data
+load('data/AS_LoS_gau.mat');
+load('data/AS_NLoS_gau.mat');
+load('data/AS_LoS_3LHS.mat');
+load('data/AS_NLoS_3LHS.mat');
+load('data/AS_LoS_NYUsim.mat');
+load('data/AS_NLoS_NYUsim.mat');
+AS_LoS_Mea.x = AS_LoS_gau.Mea_x;
+AS_LoS_Mea.y = AS_LoS_gau.Mea_y;
+AS_NLoS_Mea.x = AS_NLoS_gau.Mea_x;
+AS_NLoS_Mea.y = AS_NLoS_gau.Mea_y;
+% AS under LoS scenario
+fig = figure;
+scatter(AS_LoS_Mea.x,...
+    AS_LoS_Mea.y, ...
+    ScatterMarkerSize,...
+    'MarkerEdgeColor',color_mea, ...
+    'marker', marker_mea, ...
+    'LineWidth', PlotLineWidthValue    );
+hold on;
+
+plot(AS_LoS_gau.Sim_gau_x, ...
+    AS_LoS_gau.Sim_gau_y, ...
+    'color',color_gau, ...
+    'LineWidth',PlotLineWidthValue);
+hold on;
+
+plot(AS_LoS_NYUsim.x, ...
+    AS_LoS_NYUsim.y * 100, ...
+    'color',color_NYUsim, ...
+    'LineWidth',PlotLineWidthValue);
+hold on;
+
+plot(AS_LoS_3LHS.Sim_3LHS_x, ...
+    AS_LoS_3LHS.Sim_3LHS_y, ...
+    'color',color_3LHS, ...
+    'LineWidth',PlotLineWidthValue);
+hold on;
+
+
+grid on;
+xlim([0 130]);
+lgd = legend('Measured','Gaussian Channel', 'NYU channel model [xx]', 'proposed 3LHS', ...
+    'Location','southeast',fontsize=myFontSize);
+lgd.ItemTokenSize = ItemTokenSizeValue;
+
+xlabel('Angular Spreads (deg)');
+ylabel('CDF: Probability (%)');
+set(gca, ...
+    'FontName','Times New Roman','FontSize',myFontSize);
+
+
+saveas(fig,'autosave_Sim_Mea_AS_LoS.fig');
+saveas(fig,'png/autosave_Sim_Mea_AS_LoS.png');
+
+% AS under NLoS scenario
+fig = figure;
+scatter(AS_NLoS_Mea.x,...
+    AS_NLoS_Mea.y, ...
+    ScatterMarkerSize,...
+    'MarkerEdgeColor',color_mea, ...
+    'marker', marker_mea, ...
+    'LineWidth', PlotLineWidthValue    );
+hold on;
+
+plot(AS_NLoS_gau.Sim_gau_x, ...
+    AS_NLoS_gau.Sim_gau_y, ...
+    'color',color_gau, ...
+    'LineWidth',PlotLineWidthValue);
+hold on;
+
+plot(AS_NLoS_NYUsim.x, ...
+    AS_NLoS_NYUsim.y * 100, ...
+    'color',color_NYUsim, ...
+    'LineWidth',PlotLineWidthValue);
+hold on;
+
+plot(AS_NLoS_3LHS.Sim_3LHS_x, ...
+    AS_NLoS_3LHS.Sim_3LHS_y, ...
+    'color',color_3LHS, ...
+    'LineWidth',PlotLineWidthValue);
+hold on;
+
+
+grid on;
+xlim([0 130]);
+lgd = legend('Measured','Gaussian Channel', 'NYU channel model [xx]', 'proposed 3LHS', ...
+    'Location','southeast',fontsize=myFontSize);
+lgd.ItemTokenSize = ItemTokenSizeValue;
+
+xlabel('Angular Spreads (deg)');
+ylabel('CDF: Probability (%)');
+set(gca, ...
+    'FontName','Times New Roman','FontSize',myFontSize);
+
+
+saveas(fig,'autosave_Sim_Mea_AS_NLoS.fig');
+saveas(fig,'png/autosave_Sim_Mea_AS_NLoS.png');
